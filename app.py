@@ -6,11 +6,10 @@ import requests
 import os
 
 app = Flask(__name__)
+CORS(app, origins=["https://www.themoonai.org"]) 
+
 limiter = Limiter(app, key_func=get_remote_address)
 @limiter.limit("20 per minute")
-
-CORS(app, origins=["https://www.themoonai.org"])
-
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 

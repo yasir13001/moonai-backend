@@ -1,8 +1,17 @@
 from flask import Flask, request, jsonify
+from flask_limiter import Limiter
+from flask_cors import CORS
+
 import requests
 import os
 
 app = Flask(__name__)
+limiter = Limiter(app, key_func=get_remote_address)
+@limiter.limit("20 per minute")
+
+CORS(app, origins=["https://www.themoonai.org"])
+
+
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 @app.route("/gemini", methods=["POST"])

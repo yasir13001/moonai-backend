@@ -12,11 +12,13 @@ CORS(app, origins=["https://www.themoonai.org"])
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-limiter = Limiter(app, key_func=get_remote_address)
-@limiter.limit("20 per minute")
+limiter = Limiter(key_func=get_remote_address)
+limiter.init_app(app)
 
 
 @app.route("/gemini", methods=["POST"])
+@limiter.limit("20 per minute")
+
 def gemini_proxy():
     prompt = request.json.get("prompt")
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={GEMINI_API_KEY}"

@@ -31,3 +31,7 @@ def gemini_proxy():
 
     response = requests.post(url, json=payload)
     return jsonify(response.json())
+
+@app.route("/")
+def home():
+    return "MoonAI backend is running!", 200
